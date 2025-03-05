@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<ActiveEnvironment>PROD</ActiveEnvironment>
+	<DEV>
+		<OpenAiApiKey>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</OpenAiApiKey>
+		<ContextualOpenAiModelName>gpt-4o-mini</ContextualOpenAiModelName>
+		<VectorName>Data Extraction</VectorName>
+		<InputFolderPath>D:\Python\ExtractingPDFData\Input</InputFolderPath>
+		<OutputFolderPath>D:\Python\ExtractingPDFData\Output</OutputFolderPath>
+		<LogPath>D:\Python\ExtractingPDFData\Log</LogPath>
+	</DEV>
+	<STAGE>
+		<OpenAiApiKey>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</OpenAiApiKey>
+		<ContextualOpenAiModelName>gpt-4o-mini</ContextualOpenAiModelName>
+		<VectorName>Data Extraction</VectorName>
+		<InputFolderPath>D:\Python\ExtractingPDFData\Input</InputFolderPath>
+		<OutputFolderPath>D:\Python\ExtractingPDFData\Output</OutputFolderPath>
+		<LogPath>D:\Python\ExtractingPDFData\Log</LogPath>
+	</STAGE>
+	<PROD>
+		<OpenAiApiKey>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</OpenAiApiKey>
+		<ContextualOpenAiModelName>gpt-4o-mini</ContextualOpenAiModelName>
+		<VectorName>Data Extraction</VectorName>
+		<InputFolderPath>D:\Python\ExtractingPDFData\Input</InputFolderPath>
+		<OutputFolderPath>D:\Python\ExtractingPDFData\Output</OutputFolderPath>
+		<LogPath>D:\Python\ExtractingPDFData\Log</LogPath>
+	</PROD>
+</Configuration>
