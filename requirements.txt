@@ -1,1 +1,6 @@
 flask
+openai
+pandas
+lxml
+openpyxl
+streamlit
