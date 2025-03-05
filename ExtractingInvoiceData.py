@@ -67,9 +67,19 @@ def process_invoices(uploaded_files):
             tools=[{"type": "file_search"}],
         )
 
-        # Create vector store
-        vector_store = client.beta.vector_stores.create(name=VectorName)
-        vector_store_id = vector_store.id
+        # Create or retrieve vector store
+        vector_stores = client.beta.vector_stores.list()
+        vector_store_id = None
+
+        for vector_store in vector_stores:
+            if vector_store.name == VectorName:
+                vector_store_id = vector_store.id
+                break
+
+        if not vector_store_id:
+            vector_store = client.beta.vector_stores.create(name=VectorName)
+            vector_store_id = vector_store.id
+
     except Exception as e:
         st.error(f"❌ Error initializing OpenAI Assistant: {e}")
         return None
@@ -116,12 +126,13 @@ def process_invoices(uploaded_files):
                     st.warning(f"⚠️ No response received for {uploaded_file.name}. Skipping...")
                     continue
 
-                message_content_obj = messages[0].content[0]
+                message_content = None
+                for content_obj in messages[0].content:
+                    if hasattr(content_obj, "text") and isinstance(content_obj.text, str):
+                        message_content = content_obj.text
+                        break
 
-                # Ensure message_content is a string
-                if hasattr(message_content_obj, "text") and isinstance(message_content_obj.text, str):
-                    message_content = message_content_obj.text
-                else:
+                if message_content is None:
                     st.warning(f"⚠️ No valid text response for {uploaded_file.name}. Skipping...")
                     continue
 
@@ -136,6 +147,14 @@ def process_invoices(uploaded_files):
                         output_data.append(parsed_result)
                     except json.JSONDecodeError:
                         st.error(f"❌ Error parsing JSON for {uploaded_file.name}")
+
+                # Delete file from vector store
+                vector_store_files = client.beta.vector_stores.files.list(vector_store_id=vector_store_id)
+                file_id = vector_store_files.data[-1].id if vector_store_files.data else None
+
+                if file_id:
+                    client.beta.vector_stores.files.delete(vector_store_id=vector_store_id, file_id=file_id)
+                    st.write(f"🗑️ File {uploaded_file.name} deleted from vector store.")
 
             except Exception as e:
                 st.error(f"❌ Error processing {uploaded_file.name}: {e}")
