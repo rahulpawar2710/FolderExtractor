@@ -119,7 +119,7 @@ def process_invoices(uploaded_files):
                 message_content_obj = messages[0].content[0]
 
                 # Ensure message_content is a string
-                if hasattr(message_content_obj, "text"):
+                if hasattr(message_content_obj, "text") and isinstance(message_content_obj.text, str):
                     message_content = message_content_obj.text
                 else:
                     st.warning(f"⚠️ No valid text response for {uploaded_file.name}. Skipping...")
